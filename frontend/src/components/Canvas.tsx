@@ -19,9 +19,9 @@ function Canvas() {
   
     return (
         <div ref={divRef} className="w-full h-full">
-        <svg width="100%" height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet" className="w-full h-full border-2">
-            <AndGate xOrigin={dimensions.width * 0.8} yOrigin={dimensions.height / 2} scale={2} operandOne={0} operandTwo={1} text={"A and B"} isOutput={true}/>
-        </svg>
+            <svg width="100%" height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet" className="w-full h-full border-2">
+                <AndGate xOrigin={dimensions.width * 0.8} yOrigin={dimensions.height / 2} scale={1.5} operandOne={0} operandTwo={1} text={"A and B"} isOutput={true}/>
+            </svg>
         </div>
     );
 }
