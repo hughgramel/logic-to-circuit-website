@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import AndGate from './AndGate';
 import { AndOperator } from '@shared/types/AndOperator';
+import { OrOperator } from '@shared/types/OrOperator';
 
 function Canvas() {
 
@@ -31,10 +32,8 @@ function Canvas() {
     convertStringToOperations("a plus (a + b) + abc")
 
 
-    const and =  new AndOperator(1, new AndOperator(1, new AndOperator(1, new AndOperator(1, 1))))
-    console.log("evaluating")
-    console.log(and)
-  
+    const and =  new AndOperator(new OrOperator(0, 1), new AndOperator(1, new OrOperator(0, new AndOperator(1, 1))))
+    console.log(and.print() + " = " + and.eval())
     return (
         <div ref={divRef} className="w-full h-full">
             <svg width="100%" height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet" className="w-full h-full border-2">

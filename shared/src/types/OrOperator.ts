@@ -1,6 +1,6 @@
 import { BooleanOperator } from "./Operator";
 
-export class AndOperator implements BooleanOperator {
+export class OrOperator implements BooleanOperator {
     operandOne: BooleanOperator | 0 | 1;
     operandTwo: BooleanOperator | 0 | 1;
 
@@ -33,15 +33,15 @@ export class AndOperator implements BooleanOperator {
     // TODO: Refactor this since I think I could honestly make this like one line?
     eval = (): 0 | 1 => {
         if (this.operandsAreBothTrueOrFalse()) {
-            return this.operandOne && this.operandTwo
+            return this.operandOne || this.operandTwo
         } else if (this.operandOneIsAnOperator()) {
             // This means that operand two must be a Boolean operator
-            return (this.operandOne.eval() && this.operandTwo)
+            return (this.operandOne.eval() || this.operandTwo)
         } else if (this.operandTwoIsAnOperator()) {
             // This means operandOne must be a Boolean operator
-            return (this.operandTwo.eval() && this.operandOne)
+            return (this.operandTwo.eval() || this.operandOne)
         } else if (this.bothOperandsAreOperators()) {
-            return (this.operandOne.eval() && this.operandTwo.eval())
+            return (this.operandOne.eval() || this.operandTwo.eval())
         } else {
             throw new Error("The operator was invalid and could not be evaluated correctly")
         }
@@ -60,7 +60,7 @@ export class AndOperator implements BooleanOperator {
             }
         };
     
-        return `AND(${operandToString(this.operandOne)}, ${operandToString(this.operandTwo)})`;
+        return `OR(${operandToString(this.operandOne)}, ${operandToString(this.operandTwo)})`;
     }
     
 }

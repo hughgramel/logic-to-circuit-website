@@ -24,4 +24,10 @@ export interface BooleanOperator {
      * @returns 
      */
     render: (xOrigin: number, yOrigin: number, scale: number, text: string, isOutput: boolean) => void
+
+    /**
+     * This returns a string representation of the operator and it's operands
+     * @returns a string representation of the operator and it's operands
+     */
+    print: () => string;
 }
