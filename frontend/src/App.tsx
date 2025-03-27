@@ -1,78 +1,66 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react';
+import Canvas from './components/Canvas';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const App = () => {
+  const [logicExpression, setLogicExpression] = useState('');
 
-import { Todo } from '@shared/types';
+  const handleGenerate = () => {
+    console.log('Generating circuit for:', logicExpression);
+  };
 
-function App() {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [newTodoText, setNewTodoText] = useState('')
-
-  useEffect(() => {
-    fetchTodos()
-  }, [])
-
-  const fetchTodos = async () => {
-    const response = await axios.get(`${API_URL}/api/todos`)
-    setTodos(response.data)
-  }
-
-  const addTodo = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newTodoText.trim()) return
-
-    await axios.post(`${API_URL}/api/todos`, { text: newTodoText })
-    setNewTodoText('')
-    fetchTodos()
-  }
-
-  const toggleTodo = async (id: number) => {
-    await axios.put(`${API_URL}/api/todos/${id}`)
-    fetchTodos()
-  }
+  const handleClear = () => {
+    setLogicExpression('');
+  };
 
   return (
-    <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
-      <form onSubmit={addTodo} className="mb-4">
-        <input
-          type="text"
-          value={newTodoText}
-          onChange={(e) => setNewTodoText(e.target.value)}
-          placeholder="Add new todo"
-          className="border p-2 mr-2 rounded"
-        />
-        <button 
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Add
-        </button>
-      </form>
-      <ul className="space-y-2">
-        {todos.map(todo => (
-          <li key={todo.id} className="flex items-center space-x-2">
-            <input
-              title="Toggle todo"
-              placeholder="Toggle"
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
-              className="h-4 w-4"
-            />
-            <span 
-              className={`${
-                todo.completed ? 'line-through text-gray-500' : ''
-              }`}
+    <div className="flex w-full h-screen">
+      {/* Left Panel - Input */}
+      <div className="w-1/3 bg-gray-100 p-8 flex flex-col">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Logic to Circuit Generator
+        </h1>
+        
+        <div className="flex-grow flex flex-col">
+          <label htmlFor="logic-input" className="block mb-2 text-gray-700 text-lg">
+            Enter Logic Expression
+          </label>
+          <textarea 
+            id="logic-input"
+            className="w-full h-48 p-4 text-base border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            value={logicExpression}
+            onChange={(e) => setLogicExpression(e.target.value)}
+            placeholder="Enter your logic expression here. 
+For example:
+(A AND B) OR (NOT C)"
+          />
+          
+          <div className="flex space-x-4 mt-4">
+            <button 
+              className="flex-1 py-3 text-base bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              onClick={handleGenerate}
+              disabled={!logicExpression.trim()}
             >
-              {todo.text}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+              Generate Circuit
+            </button>
+            <button 
+              className="flex-1 py-3 text-base bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              onClick={handleClear}
+              disabled={!logicExpression.trim()}
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
 
-export default App
+      {/* Right Panel - Canvas */}
+      <div className="w-full bg-white p-8">
+        <div className="w-full h-full border-5 border-gray-300 rounded-2xl overflow-hidden">
+          <Canvas/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
