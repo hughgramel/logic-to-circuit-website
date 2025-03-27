@@ -16,7 +16,7 @@ function Canvas() {
     }, []); // Runs only once on mount
 
 
-    console.log("CALCULATING")
+    console.log("For this section our goal is to evaluate this correctly")
     const convertStringToOperations = (str: string) => {
         const result = str
         .replace(/\s+/g, '')      // Remove all spaces
