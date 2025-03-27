@@ -15,7 +15,20 @@ function Canvas() {
         }
     }, []); // Runs only once on mount
 
-    
+
+    console.log("CALCULATING")
+    const convertStringToOperations = (str: string) => {
+        const result = str
+        .replace(/\s+/g, '')      // Remove all spaces
+        .replace(/plus|∨|v/gi, '+') // Replace "plus", "∨", or "v" with "+"
+        .toLowerCase();           // Convert to lowercase
+        console.log(result);
+    }
+    convertStringToOperations("(A + B)")
+    convertStringToOperations("a + b")
+    convertStringToOperations("a plus b")
+    convertStringToOperations("a plus (a + b) + abc")
+
   
     return (
         <div ref={divRef} className="w-full h-full">

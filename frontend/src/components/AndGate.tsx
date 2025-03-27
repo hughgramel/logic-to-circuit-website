@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {Input} from '@shared/types/Input'
+import { Gate } from "@shared/types/Gate";
 
 
 interface AndGateProps {
@@ -51,9 +52,10 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
 
     const operandOneHasValue = (operandOne == 0 || operandOne == 1);
     const operandTwoHasValue = (operandOne == 0 || operandOne == 1);
+    const gateOne: Gate = "hugh"
 
     // INPUTS
-    const inputs = [operandOne, operandTwo]
+    const inputs = [operandOne, operandTwo, gateOne]
     const inputCount = inputs.length
     const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (inputs.length + 1))
 
@@ -71,29 +73,34 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
     const bottomRightString = `${rectangleRightSideMiddleX},${y + heightAfterScale / 2}`
     const bottomLeftString = `${rectangleRightSideMiddleX - widthAfterScale}, ${y + heightAfterScale / 2}`
 
+    
 
 
 
-    const printInputLineWhenTrueOrFalse = (input: Input, index: number) => {
-        return <>
-            <line 
-                x1={`${topLeftX}`} 
-                y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} 
-                x2={`${topLeftX - widthAfterScale}`} 
-                y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} stroke="black" strokeWidth="3" 
-            /> 
+    const createFromInput = (input: Input, index: number) => {
+        if (input === 1 || input === 0) {
+            return <>
+                <line 
+                    x1={`${topLeftX}`} 
+                    y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} 
+                    x2={`${topLeftX - widthAfterScale}`} 
+                    y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} stroke="black" strokeWidth="3" 
+                /> 
 
-            <text 
-                x={topLeftX - widthAfterScale * TEXT_X_VALUE_ADJUSTMENT_RATIO} 
-                y={topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}  
-                fontSize={fontSize} 
-                fontFamily="Arial, sans-serif"
-                fill="black"
-                dominantBaseline="middle"
-            >
-                {input}
-            </text>
-    </>
+                <text 
+                    x={topLeftX - widthAfterScale * TEXT_X_VALUE_ADJUSTMENT_RATIO} 
+                    y={topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}  
+                    fontSize={fontSize} 
+                    fontFamily="Arial, sans-serif"
+                    fill="black"
+                    dominantBaseline="middle"
+                >
+                    {input}
+                </text>
+            </>
+        } else {
+            console.log("IS A GATE")
+        }
     }
 
 
@@ -148,7 +155,7 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
         { true && <>
                 {
                     inputs.map((input, num) => [
-                        printInputLineWhenTrueOrFalse(input, num)
+                        createFromInput(input, num)
                     ])
                 }
                 
