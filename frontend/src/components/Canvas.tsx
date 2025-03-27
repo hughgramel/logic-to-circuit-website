@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import AndGate from './AndGate';
+import { AndOperator } from '@shared/types/AndOperator';
 
 function Canvas() {
 
@@ -29,6 +30,10 @@ function Canvas() {
     convertStringToOperations("a plus b")
     convertStringToOperations("a plus (a + b) + abc")
 
+
+    const and =  new AndOperator(1, new AndOperator(1, new AndOperator(1, new AndOperator(1, 1))))
+    console.log("evaluating")
+    console.log(and)
   
     return (
         <div ref={divRef} className="w-full h-full">

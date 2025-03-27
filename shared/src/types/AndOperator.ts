@@ -25,7 +25,7 @@ export class AndOperator implements BooleanOperator {
         }
     }
 
-    render = (xOrigin: number, yOrigin: number, scale: number, text: string, isOutput: boolean) => [
+    render = (xOrigin: number, yOrigin: number, scale: number, text: string, isOutput: boolean) => {
         console.log("rendering")
-    ]
+    }
 }
