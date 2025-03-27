@@ -6,7 +6,7 @@
 export interface BooleanOperator {
     
     operandOne: BooleanOperator | 1 | 0
-    operandTwo: BooleanOperator | 1 | 0
+    operandTwo?: BooleanOperator | 1 | 0
 
     /**
      * This function evaluates both operators and then renders them

@@ -1,4 +1,4 @@
-import { BooleanOperator } from "./Operator";
+import { BooleanOperator } from "./BooleanOperator";
 
 export class AndOperator implements BooleanOperator {
     operandOne: BooleanOperator | 0 | 1;
@@ -9,20 +9,20 @@ export class AndOperator implements BooleanOperator {
         this.operandTwo = operandTwo;
     }
 
-    operandsAreBothTrueOrFalse = (): this is { operandOne: 0 | 1, operandTwo: 0 | 1 } => {
+    private operandsAreBothTrueOrFalse = (): this is { operandOne: 0 | 1, operandTwo: 0 | 1 } => {
         return (this.operandOne == 0 || this.operandOne == 1) && (this.operandTwo == 0 || this.operandTwo == 1)
     }
 
-    operandOneIsAnOperator = (): this is {operandOne: BooleanOperator, operandTwo: 0 | 1} => {
+    private operandOneIsAnOperator = (): this is {operandOne: BooleanOperator, operandTwo: 0 | 1} => {
         return (this.operandOne != 0 && this.operandOne != 1) && (this.operandTwo == 0 || this.operandTwo == 1)
     }
 
-    operandTwoIsAnOperator = (): this is {operandOne: 0 | 1, operandTwo: BooleanOperator} => {
+    private operandTwoIsAnOperator = (): this is {operandOne: 0 | 1, operandTwo: BooleanOperator} => {
         return (this.operandTwo != 0 && this.operandTwo != 1) && (this.operandOne == 0 || this.operandOne == 1)
     }
 
 
-    bothOperandsAreOperators = (): this is {operandOne: BooleanOperator, operandTwo: BooleanOperator} => {
+    private bothOperandsAreOperators = (): this is {operandOne: BooleanOperator, operandTwo: BooleanOperator} => {
         return (this.operandTwo != 0 && this.operandTwo != 1) && (this.operandOne != 0 && this.operandOne != 1)
     }
     

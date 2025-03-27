@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import AndGate from './AndGate';
 import { AndOperator } from '@shared/types/AndOperator';
 import { OrOperator } from '@shared/types/OrOperator';
+import { NotOperator } from '@shared/types/NotOperator';
 
 function Canvas() {
 
@@ -34,6 +35,18 @@ function Canvas() {
 
     const and =  new AndOperator(new OrOperator(0, 1), new AndOperator(1, new OrOperator(0, new AndOperator(1, 1))))
     console.log(and.print() + " = " + and.eval())
+    const not = new NotOperator(new OrOperator(0, 0));
+    console.log(not.print() + " = " + not.eval())
+
+
+    /**
+     * TODO: instead of doing AndGates, iterate through the rendering. You should continuously decrease the x value 
+     * and decrease / increase the y value based on where you're going. Just do a basic implementation that 
+     * makes multiple and blocks and you can fix it later. 
+     */
+
+    // (NOTE): Potentially could use an array to connect together when you have multiple ands? Maybe make a function to merge?
+    // Make a function to draw lines? 
     return (
         <div ref={divRef} className="w-full h-full">
             <svg width="100%" height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet" className="w-full h-full border-2">
