@@ -3,6 +3,7 @@ import AndGate from './AndGate';
 import { AndOperator } from '@shared/types/AndOperator';
 import { OrOperator } from '@shared/types/OrOperator';
 import { NotOperator } from '@shared/types/NotOperator';
+import { BinaryTree } from '../../../shared/src/types/BinaryTree';
 
 function Canvas() {
 
@@ -33,11 +34,16 @@ function Canvas() {
     convertStringToOperations("a plus (a + b) + abc")
 
 
-    const and =  new AndOperator(new OrOperator(0, 1), new AndOperator(1, new OrOperator(0, new AndOperator(1, 1))))
+    const and =  new AndOperator(0, 1)
     console.log(and.print() + " = " + and.eval())
     const not = new NotOperator(new OrOperator(0, 0));
     console.log(not.print() + " = " + not.eval())
 
+
+    
+
+    const correctTree = BinaryTree.createBinaryExpressionTreeFromPostFixNotation("a b + c d e + * *".split(" "))
+    correctTree.print()
 
     /**
      * TODO: instead of doing AndGates, iterate through the rendering. You should continuously decrease the x value 
@@ -50,7 +56,13 @@ function Canvas() {
     return (
         <div ref={divRef} className="w-full h-full">
             <svg width="100%" height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet" className="w-full h-full border-2">
-                <AndGate xOrigin={dimensions.width * 0.8} yOrigin={dimensions.height / 2} scale={1.5} operandOne={0} operandTwo={1} text={"A and B"} isOutput={true}/>
+                {/* <AndGate xOrigin={dimensions.width * 0.8} yOrigin={dimensions.height / 2} scale={1.5} operandOne={0} operandTwo={1} text={"A and B"} isOutput={true}/> */}
+                <line 
+                    x1={`${100}`} 
+                    y1={`${100}`} 
+                    x2={`${50}`} 
+                    y2={`${50}`} stroke="black" strokeWidth="3" 
+                /> 
             </svg>
         </div>
     );
