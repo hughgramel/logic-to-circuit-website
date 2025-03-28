@@ -3,7 +3,7 @@ import {Input} from '@shared/types/Input'
 import { Gate } from "@shared/types/Gate";
 
 
-interface AndGateProps {
+export interface AndGateProps {
     xOrigin: number;
     yOrigin: number;
     scale: number;
@@ -13,7 +13,7 @@ interface AndGateProps {
     isOutput: boolean;
 }
 
-function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutput }: AndGateProps) {
+function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutput, inputsArr }: AndGateProps) {
 
     const x = xOrigin
     const y = yOrigin
@@ -55,7 +55,7 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
     const gateOne: Gate = "hugh"
 
     // INPUTS
-    const inputs = [operandOne, operandTwo, gateOne]
+    const inputs = [operandOne, operandTwo]
     const inputCount = inputs.length
     const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (inputs.length + 1))
 

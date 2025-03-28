@@ -22,7 +22,7 @@ export class BinaryTree<T> {
      * that represents
      * @param str 
      */
-    static createBinaryExpressionTreeFromPostFixNotation = (array: string[]): BinaryTree<String> => {
+    static createBinaryExpressionTreeFromPostFixNotation = (array: string[]): BinaryTree<string> => {
         if (array.length < 3) {
             throw new Error("Must have at least 2 operands and an operator")
         }
