@@ -133,11 +133,12 @@ export class CircuitBuilder {
         let yVal = this.rootCoordinate.y
         
         const traverseAllNodesInOrder = (node: Node<string>, xValue: number, yValue: number, yValueDiff: number, isOutput: boolean) => {
+            
             if (node != null) {
 
 //                 For each node at level i, calculate its vertical position based on its position in the ordered nodes at that level
 // If a level has n nodes, divide your canvas height h into n+1 segments
-                
+                const WIDTH_CONSTANT = 160
                 if (operatorSymbols.includes(node.value)) {
                     currCompList.push({
                         type: "AndGate",
@@ -164,7 +165,7 @@ export class CircuitBuilder {
                         const widthOfSegmentOnThisLevelLeft = (height) / (rankAtThisLevelLeft + 1)
 
 
-                        let leftEndpointX = this.rootCoordinate.x - node.left.level * 200
+                        let leftEndpointX = this.rootCoordinate.x - node.left.level * WIDTH_CONSTANT
                         let leftEndpointY = (currentRankInLevelLeft + 1) * widthOfSegmentOnThisLevelLeft
                         let leftStartPointX = leftWire.x
                         const leftStartPointY = leftWire.y
@@ -182,7 +183,7 @@ export class CircuitBuilder {
         
 
                         
-                        let rightEndpointX = this.rootCoordinate.x - node.right.level * 200
+                        let rightEndpointX = this.rootCoordinate.x - node.right.level * WIDTH_CONSTANT
                         const rightEndpointY = (currentRankInLevelRight + 1) * widthOfSegmentOnThisLevelRight
                         let rightStartPointX = rightWire.x
                         const rightStartPointY = rightWire.y

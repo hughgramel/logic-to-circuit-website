@@ -11,7 +11,7 @@ function Variable({ varLetter, xPosition, yPosition, status, scale = 1 }: Variab
         <text 
             x={xPosition - 10} 
             y={yPosition}  
-            fontSize={25 * scale} 
+            fontSize={24 * scale} 
             fontFamily="Arial, sans-serif"
             fill="black"
             dominantBaseline="middle"

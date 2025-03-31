@@ -9,6 +9,7 @@ import React from 'react';
 import { CircuitBuilder } from '../../../shared/src/types/CircuitBuilder';
 import { createBinaryExpressionTreeFromPostFixNotation } from '@shared/types/EvaluateExpressions';
 import Variable from './Variable';
+import { CMD_STRING } from '../../../shared/src/types/COMMAND';
 
 function Canvas() {
 
@@ -72,7 +73,7 @@ function Canvas() {
     // (NOTE): Potentially could use an array to connect together when you have multiple ands? Maybe make a function to merge?
     // Make a function to draw lines? 
     
-    const circuitBuilder = new CircuitBuilder('a b or c or', 1200, 1200)
+    const circuitBuilder = new CircuitBuilder(CMD_STRING, 1200, 1200)
     // circuitBuilder.printTree()
     const domProps = circuitBuilder.generateAllCircuits()
     return (
