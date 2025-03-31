@@ -72,6 +72,9 @@ export class CircuitBuilder {
         console.log(replaceWordsWithCorrectSymbols(treeInPostFixNotation))
         const createdTree = createBinaryExpressionTreeFromPostFixNotation(replaceWordsWithCorrectSymbols(treeInPostFixNotation))
         this.binaryTree = createdTree;
+        createdTree.print()
+        createdTree.setLevelsAndRanks()
+        console.log(createdTree)
     }
 
 
@@ -141,19 +144,22 @@ export class CircuitBuilder {
                     const {leftWire, rightWire} = this.calculateOutputWireLocationsFromCurrentGate(xValue, yValue, 1)
 
                     if (node.left) {
-                        const leftEndpointX = xValue - 200
-                        const leftEndpointY = yValue + yValueDiff
+                        let leftEndpointX = xValue - 200
+                        let leftEndpointY = yValue + yValueDiff
                         const leftStartPointX = leftWire.x
                         const leftStartPointY = leftWire.y
 
-                        if (!operatorSymbols.includes(node.left.value)) {
-                            // variableConnectionOrigins.push({
-                            //     var: node.left.value,
-                            //     x: leftEndpointX,
-                            //     y: leftEndpointY
-                            // })
-                            variables.add(node.left.value)
-                        } 
+                        // if (!operatorSymbols.includes(node.left.value)) {
+                        //     variableConnectionOrigins.push({
+                        //         var: node.left.value,
+                        //         x: leftEndpointX,
+                        //         y: leftEndpointY
+                        //     })
+                        //     variables.add(node.left.value)
+                        // }
+
+                        
+                       
                             const newConnectionBetweenCurrentGateAndNextLocation = this.createConnection(leftStartPointX, leftStartPointY, leftEndpointX, leftEndpointY)
                             currCompList.push({
                                 type: "WireConnection",
@@ -171,15 +177,6 @@ export class CircuitBuilder {
                         const rightEndpointY = yValue - yValueDiff
                         const rightStartPointX = rightWire.x
                         const rightStartPointY = rightWire.y
-
-                        if (!operatorSymbols.includes(node.right.value)) {
-                            // variableConnectionOrigins.push({
-                            //     var: node.right.value,
-                            //     x: rightEndpointX,
-                            //     y: rightEndpointY
-                            // })
-                            variables.add(node.right.value)
-                        } 
                             const newConnectionBetweenCurrentGateAndNextLocation = this.createConnection(rightStartPointX, rightStartPointY, rightEndpointX, rightEndpointY)
                             currCompList.push({
                                 type: "WireConnection",
