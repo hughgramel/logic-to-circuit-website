@@ -110,8 +110,19 @@ export class CircuitBuilder {
     }
 
 
+    private bothEndpointsAreBelow(originY: number, endpointOne: number, endpointTwo: number) {
+        return endpointOne > originY && endpointTwo > originY
+    }
+
+    private bothEndpointsAreAbove(originY: number, endpointOne: number, endpointTwo: number) {
+        return endpointOne < originY && endpointTwo < originY
+    }
+
+
+
     generateAllCircuits = (): domElementProp[] => {
         const currCompList: domElementProp[] = []
+        const height = this.rootCoordinate.y * 2
 
 
         const variables = new Set()
@@ -123,8 +134,9 @@ export class CircuitBuilder {
         
         const traverseAllNodesInOrder = (node: Node<string>, xValue: number, yValue: number, yValueDiff: number, isOutput: boolean) => {
             if (node != null) {
-                console.log(node.value)
-                console.log(xValue, yValue)
+
+//                 For each node at level i, calculate its vertical position based on its position in the ordered nodes at that level
+// If a level has n nodes, divide your canvas height h into n+1 segments
                 
                 if (operatorSymbols.includes(node.value)) {
                     currCompList.push({
@@ -143,46 +155,73 @@ export class CircuitBuilder {
 
                     const {leftWire, rightWire} = this.calculateOutputWireLocationsFromCurrentGate(xValue, yValue, 1)
 
-                    if (node.left) {
-                        let leftEndpointX = xValue - 200
-                        let leftEndpointY = yValue + yValueDiff
-                        const leftStartPointX = leftWire.x
+                    let leftEnd
+
+                    if (node.left && node.right) {
+
+                        const rankAtThisLevelLeft = this.binaryTree.getNodesCountAtLevel(node.left.level)
+                        const currentRankInLevelLeft = node.left.rank
+                        const widthOfSegmentOnThisLevelLeft = (height) / (rankAtThisLevelLeft + 1)
+
+
+                        let leftEndpointX = this.rootCoordinate.x - node.left.level * 200
+                        let leftEndpointY = (currentRankInLevelLeft + 1) * widthOfSegmentOnThisLevelLeft
+                        let leftStartPointX = leftWire.x
                         const leftStartPointY = leftWire.y
 
-                        // if (!operatorSymbols.includes(node.left.value)) {
-                        //     variableConnectionOrigins.push({
-                        //         var: node.left.value,
-                        //         x: leftEndpointX,
-                        //         y: leftEndpointY
-                        //     })
-                        //     variables.add(node.left.value)
-                        // }
-
-                        
+                        // Move to bottom
                        
-                            const newConnectionBetweenCurrentGateAndNextLocation = this.createConnection(leftStartPointX, leftStartPointY, leftEndpointX, leftEndpointY)
-                            currCompList.push({
-                                type: "WireConnection",
-                                props: newConnectionBetweenCurrentGateAndNextLocation
-                            })
-    
-                            traverseAllNodesInOrder(node.left, leftEndpointX, leftEndpointY, yValueDiff * 2, false)
 
                         
                             
-                    } 
-                    if (node.right) {
+
+                        const rankAtThisLevelRight = this.binaryTree.getNodesCountAtLevel(node.right.level)
+                        const currentRankInLevelRight = node.right.rank
+                        const widthOfSegmentOnThisLevelRight = (height) / (rankAtThisLevelRight + 1)
+                        console.log(node.right.value + " should be at Y value: " + (currentRankInLevelRight) * widthOfSegmentOnThisLevelRight)
+        
+
                         
-                        const rightEndpointX = xValue - 200
-                        const rightEndpointY = yValue - yValueDiff
-                        const rightStartPointX = rightWire.x
+                        let rightEndpointX = this.rootCoordinate.x - node.right.level * 200
+                        const rightEndpointY = (currentRankInLevelRight + 1) * widthOfSegmentOnThisLevelRight
+                        let rightStartPointX = rightWire.x
                         const rightStartPointY = rightWire.y
-                            const newConnectionBetweenCurrentGateAndNextLocation = this.createConnection(rightStartPointX, rightStartPointY, rightEndpointX, rightEndpointY)
+
+
+                        if (this.bothEndpointsAreBelow(yValue - 15, rightEndpointY, leftEndpointY)) {
+                            console.log("below")
+                            rightStartPointX = rightWire.x - 15
+                            const extendRightStartPoint = this.createConnection(rightWire.x, rightWire.y, rightWire.x - 15, rightWire.y)
                             currCompList.push({
                                 type: "WireConnection",
-                                props: newConnectionBetweenCurrentGateAndNextLocation
+                                props: extendRightStartPoint
                             })
-                            traverseAllNodesInOrder(node.right, rightEndpointX, rightEndpointY, yValueDiff * 2, false)
+                        } else if (this.bothEndpointsAreAbove(yValue + 15, rightEndpointY, leftEndpointY)) {
+                            console.log("above")
+                            leftStartPointX = leftWire.x - 15
+                            const extendLeftStartPoint = this.createConnection(leftWire.x, leftWire.y, leftWire.x - 15, leftWire.y)
+                            currCompList.push({
+                                type: "WireConnection",
+                                props: extendLeftStartPoint
+                            })
+                        }
+
+                        // Create and traverse left
+                        const newConnectionBetweenCurrentGateAndNextLocationLeft = this.createConnection(leftStartPointX, leftStartPointY, leftEndpointX, leftEndpointY)
+                        currCompList.push({
+                            type: "WireConnection",
+                            props: newConnectionBetweenCurrentGateAndNextLocationLeft
+                        })
+
+                        traverseAllNodesInOrder(node.left, leftEndpointX, leftEndpointY, yValueDiff * 2, false)
+
+                        // Create and traverse right
+                        const newConnectionBetweenCurrentGateAndNextLocationRight = this.createConnection(rightStartPointX, rightStartPointY, rightEndpointX, rightEndpointY)
+                        currCompList.push({
+                            type: "WireConnection",
+                            props: newConnectionBetweenCurrentGateAndNextLocationRight
+                        })
+                        traverseAllNodesInOrder(node.right, rightEndpointX, rightEndpointY, yValueDiff * 2, false)
                         
 
                         // if (!operatorSymbols.includes(node.right.value)) {
