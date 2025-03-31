@@ -40,7 +40,7 @@ class AndOperator {
             }
         };
         this.render = (xOrigin, yOrigin, scale, text, isOutput) => {
-            console.log("rendering");
+            console.log("render");
         };
         this.print = () => {
             const operandToString = (operand) => {

@@ -7,13 +7,11 @@ export interface AndGateProps {
     xOrigin: number;
     yOrigin: number;
     scale: number;
-    operandOne: Input
-    operandTwo: Input;
     text: string;
     isOutput: boolean;
 }
 
-function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutput, inputsArr }: AndGateProps) {
+function AndGate({ xOrigin, yOrigin, scale, text, isOutput }: AndGateProps) {
 
     const x = xOrigin
     const y = yOrigin
@@ -41,23 +39,13 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
     const textY = y - heightAfterScale / 2 - 8 * scale; // Positioned above the gate
     const fontSize = 14 * scale; // Scale the font size
 
-    const [output, setOutput] = useState(operandOne && operandTwo);
-
-    // Update output whenever operands change
-    useEffect(() => {
-        setOutput(operandOne && operandTwo);
-    }, [operandOne, operandTwo]);
 
 
 
-    const operandOneHasValue = (operandOne == 0 || operandOne == 1);
-    const operandTwoHasValue = (operandOne == 0 || operandOne == 1);
-    const gateOne: Gate = "hugh"
 
     // INPUTS
-    const inputs = [operandOne, operandTwo]
-    const inputCount = inputs.length
-    const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (inputs.length + 1))
+    const inputCount = 2
+    const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (2 + 1))
 
 
     const rectangleRightSideMiddleX = xOrigin - widthAfterScale
@@ -77,30 +65,10 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
 
 
 
-    const createFromInput = (input: Input, index: number) => {
-        if (input === 1 || input === 0) {
+    const createFromInput = (index: number) => {
             return <>
-                <line 
-                    x1={`${topLeftX}`} 
-                    y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} 
-                    x2={`${topLeftX - widthAfterScale}`} 
-                    y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}`} stroke="black" strokeWidth="3" 
-                /> 
-
-                <text 
-                    x={topLeftX - widthAfterScale * TEXT_X_VALUE_ADJUSTMENT_RATIO} 
-                    y={topLeftY + heightAdjustmentForOutputBasedOnInputCount * (index + 1)}  
-                    fontSize={fontSize} 
-                    fontFamily="Arial, sans-serif"
-                    fill="black"
-                    dominantBaseline="middle"
-                >
-                    {input}
-                </text>
+                
             </>
-        } else {
-            console.log("IS A GATE")
-        }
     }
 
 
@@ -124,8 +92,21 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
         <path d={`M ${topRightString} A ${radiusStr} 0 0,1 ${bottomRightString}`} fill="white" stroke="black" strokeWidth="3" />
         <path d={`M ${topRightString} L${topLeftString} L${bottomLeftString} L${bottomRightString}`}  fill="white" stroke="black" strokeWidth="3" />
         
+
+        <line 
+            x1={`${topLeftX}`} 
+            y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (1)}`} 
+            x2={`${topLeftX - widthAfterScale}`} 
+            y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (1)}`} stroke="black" strokeWidth="3" 
+        /> <line 
+            x1={`${topLeftX}`} 
+            y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (2)}`} 
+            x2={`${topLeftX - widthAfterScale}`} 
+            y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (2)}`} stroke="black" strokeWidth="3" 
+        /> 
+
         {/* Output line and text for the output */}
-        {isOutput && 
+        {
             <>
                 {/* Output line */}
                 
@@ -138,29 +119,9 @@ function AndGate({ xOrigin, yOrigin, scale, operandOne, operandTwo, text, isOutp
 
                 {/* Output text (0 or 1)*/}
 
-                <text 
-                    x={xOrigin + scale * 4} 
-                    y={yOrigin}  
-                    fontSize={fontSize} 
-                    fontFamily="Arial, sans-serif"
-                    fill="black"
-                    dominantBaseline="middle"
-                >
-                    {`${output ? "1" : "0"}`}
-                </text>
 
             </>
         }
-
-        { true && <>
-                {
-                    inputs.map((input, num) => [
-                        createFromInput(input, num)
-                    ])
-                }
-                
-        </>
-        }                
     </>
   );
 }

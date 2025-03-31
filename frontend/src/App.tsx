@@ -13,7 +13,7 @@ const App = () => {
   };
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-screen border-5 justify-end">
       {/* Left Panel - Input */}
       <div className="w-1/3 bg-gray-100 p-8 flex flex-col">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
@@ -54,9 +54,9 @@ For example:
       </div>
 
       {/* Right Panel - Canvas */}
-      <div className="w-full bg-white p-8">
-        <div className="w-full h-full border-5 border-gray-300 rounded-2xl overflow-hidden">
-          <Canvas/>
+      <div className="w-2/3 h-screen aspect-square bg-white p-8 border-10">
+        <div className="aspect-square h-full border-5 border-gray-300 rounded-2xl overflow-hidden">
+          <Canvas />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
+    "jsx": "react",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./dist",
