@@ -9,8 +9,8 @@ import { BinaryTree, Node } from "./BinaryTree"
 export const createBinaryExpressionTreeFromPostFixNotation = (str: string): BinaryTree<string> => {
     const array = str.split(" ")
     
-    if (array.length < 3) {
-        throw new Error("Must have at least 2 operands and an operator")
+    if (array.length < 2) {
+        throw new Error("Must have at least 2 operands and an operator or 1 unary operator")
     }
 
     const stack = []// Use a regular expression to replace the variable

@@ -127,6 +127,10 @@ export class CircuitBuilder {
         return endpointOne < originY && endpointTwo < originY
     }
 
+    private calculateYDiff(y1: number, y2: number): number {
+        return y2 - y1;
+    }
+      
 
 
     generateAllCircuits = (): domElementProp[] => {
@@ -207,13 +211,13 @@ export class CircuitBuilder {
         
 
                         
-                        let rightEndpointX = this.rootCoordinate.x - node.right.level * WIDTH_CONSTANT
-                        const rightEndpointY = (currentRankInLevelRight + 1) * widthOfSegmentOnThisLevelRight
+                        let rightEndpointX = this.rootCoordinate.x - node.right.level * WIDTH_CONSTANT - 5
+                        let rightEndpointY = (currentRankInLevelRight + 1) * widthOfSegmentOnThisLevelRight
                         let rightStartPointX = rightWire.x
                         const rightStartPointY = rightWire.y
 
 
-                        if (this.bothEndpointsAreBelow(yValue - 15, rightEndpointY, leftEndpointY)) {
+                        if (this.bothEndpointsAreBelow(yValue - 15, rightEndpointY, leftEndpointY) && this.calculateYDiff(rightWire.y, rightEndpointY) > 10) {
                             console.log("below")
                             rightStartPointX = rightWire.x - 15
                             const extendRightStartPoint = this.createConnection(rightWire.x, rightWire.y, rightWire.x - 15, rightWire.y)
@@ -221,7 +225,7 @@ export class CircuitBuilder {
                                 type: "WireConnection",
                                 props: extendRightStartPoint
                             })
-                        } else if (this.bothEndpointsAreAbove(yValue + 15, rightEndpointY, leftEndpointY)) {
+                        } else if (this.bothEndpointsAreAbove(yValue + 15, rightEndpointY, leftEndpointY) && this.calculateYDiff(leftWire.y, leftEndpointY) > 10) {
                             console.log("above")
                             leftStartPointX = leftWire.x - 15
                             const extendLeftStartPoint = this.createConnection(leftWire.x, leftWire.y, leftWire.x - 15, leftWire.y)
@@ -230,6 +234,10 @@ export class CircuitBuilder {
                                 props: extendLeftStartPoint
                             })
                         }
+
+                        // if (this.calculateYDiff(leftWire.y, leftEndpointY) < 5) {
+                        //     leftEndpointY = leftWire.y
+                        // }
 
                         // Create and traverse left
                         const newConnectionBetweenCurrentGateAndNextLocationLeft = this.createConnection(leftStartPointX, leftStartPointY, leftEndpointX, leftEndpointY)
@@ -240,7 +248,10 @@ export class CircuitBuilder {
 
                         traverseAllNodesInOrder(node.left, leftEndpointX, leftEndpointY, yValueDiff * 2, false)
 
-                        // Create and traverse right
+                        // // Create and traverse right
+                        // if (this.calculateYDiff(rightWire.y, rightEndpointY) < 5) {
+                        //     rightEndpointY = rightWire.y
+                        // }
                         const newConnectionBetweenCurrentGateAndNextLocationRight = this.createConnection(rightStartPointX, rightStartPointY, rightEndpointX, rightEndpointY)
                         currCompList.push({
                             type: "WireConnection",
@@ -253,8 +264,38 @@ export class CircuitBuilder {
                         //     currCompList.push(this.makeConnectionToVariable(mapOfVariableComponents.get("a"), rightStartPointX, rightStartPointY))
                         // } else {
                         // }
+                    } else if (node.right && !node.left) {
+                        if (node.right) {
+
+                            const rankAtThisLevelRight = this.binaryTree.getNodesCountAtLevel(node.right.level)
+                            const currentRankInLevelRight = node.right.rank
+                            const widthOfSegmentOnThisLevelRight = (height) / (rankAtThisLevelRight + 1)
+            
+    
+                            let rightEndpointX = this.rootCoordinate.x - node.right.level * WIDTH_CONSTANT
+                            let rightStartPointX = rightWire.x + 10
+                            const rightStartPointY = rightWire.y
+                            const rightEndpointY = rightStartPointY + 8.5;
+    
+    
+    
+                            // Create and traverse left
+    
+    
+                            // Create and traverse right
+                            const newConnectionBetweenCurrentGateAndNextLocationRight = this.createConnection(rightStartPointX, rightStartPointY + 10, rightEndpointX, rightEndpointY)
+                            currCompList.push({
+                                type: "WireConnection",
+                                props: newConnectionBetweenCurrentGateAndNextLocationRight
+                            })
+                            traverseAllNodesInOrder(node.right, rightEndpointX, rightEndpointY, yValueDiff * 2, false)
+                            
+                        } else {
+                            throw new Error("Right should be valid")
+                        }
+
                     } else {
-                        console.log(node)
+                        throw new Error("Unexpected input")
                     }
                 } else {
                     console.log("Pushing a variable")
@@ -262,7 +303,7 @@ export class CircuitBuilder {
                         type: "Variable",
                         props: {
                             varLetter: node.value,
-                            xPosition: xValue,
+                            xPosition: xValue - 10,
                             yPosition: yValue,
                             status: 0
                         }
