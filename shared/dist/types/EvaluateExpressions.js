@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertToCorrectLogicalFormat = exports.operatorEvaluationMap = exports.evaluateTree = exports.operatorMap = exports.operatorSymbols = exports.getAllPossibleEquations = exports.ALL_LOWER_AND_UPPER = exports.convertParenthesesToPostFix = exports.createBinaryExpressionTreeFromPostFixNotation = void 0;
+exports.convertToCorrectLogicalFormat = exports.replaceWordsWithCorrectSymbols = exports.operatorEvaluationMap = exports.evaluateTree = exports.operatorMap = exports.operatorSymbols = exports.getAllPossibleEquations = exports.ALL_LOWER_AND_UPPER = exports.convertParenthesesToPostFix = exports.createBinaryExpressionTreeFromPostFixNotation = void 0;
 const BinaryTree_1 = require("./BinaryTree");
 /**
 * Given an string that represents an expression in post-fix notation, returns a binary tree
@@ -21,11 +21,11 @@ const createBinaryExpressionTreeFromPostFixNotation = (str) => {
             const leftOperand = stack.pop();
             const newBinaryTree = BinaryTree_1.BinaryTree.create(char, leftOperand, rightOperand);
             stack.push(newBinaryTree);
-            console.log("operator: " + char);
+            // console.log("operator: " + char)
         }
         else {
             stack.push(char);
-            console.log("operand: " + char);
+            // console.log("operand: " + char)
         }
     }
     const finalTree = stack.pop();
@@ -47,12 +47,12 @@ const convertParenthesesToPostFix = (str) => {
         if (exports.operatorSymbols.includes(char) || "()".includes(char)) {
             // If the character is a known operator
             stack.push(char);
-            console.log(char);
+            // console.log(char)
         }
         else if (/[a-zA-Z0-9]/.test(char)) {
             // If the character is an operand (letter or number)
             postfixStack.push(char);
-            console.log(char);
+            // console.log(char)
         }
         else if (char.trim() === '') {
             // Ignore whitespace
@@ -60,13 +60,13 @@ const convertParenthesesToPostFix = (str) => {
         }
         else {
             // Handle any other characters
-            console.warn(`Unexpected character: ${char}`);
+            // console.warn(`Unexpected character: ${char}`);
         }
     }
-    console.log("postfixstack");
-    console.log(postfixStack);
-    console.log("stack");
-    console.log(stack);
+    // console.log("postfixstack")
+    // console.log(postfixStack)
+    // console.log("stack")
+    // console.log(stack)
 };
 exports.convertParenthesesToPostFix = convertParenthesesToPostFix;
 exports.ALL_LOWER_AND_UPPER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -185,6 +185,20 @@ exports.operatorEvaluationMap = {
     '∀': null,
     '∃': null,
 };
+const replaceWordsWithCorrectSymbols = (input) => {
+    // Ensure input is a string and convert to lowercase
+    const text = String(input).toLowerCase().trim();
+    // Mapping of logical operators and words to their symbolic representations
+    // Create a regular expression to match whole words
+    const regex = new RegExp(Object.keys(exports.operatorMap).join('|'), 'gi');
+    // Replace words with their symbolic representations
+    const convertedText = text.replace(regex, (matched) => {
+        return exports.operatorMap[matched.toLowerCase()];
+    });
+    // Remove all whitespace
+    return convertedText;
+};
+exports.replaceWordsWithCorrectSymbols = replaceWordsWithCorrectSymbols;
 // TODO: Understand the priority stuff. Finish circuit generator.
 const convertToCorrectLogicalFormat = (input) => {
     // Ensure input is a string and convert to lowercase

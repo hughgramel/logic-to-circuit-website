@@ -21,4 +21,5 @@ export declare const evaluateTree: (root: Node<string>) => boolean;
 export declare const operatorEvaluationMap: {
     [key: string]: ((a: boolean, b?: boolean) => boolean) | null;
 };
+export declare const replaceWordsWithCorrectSymbols: (input: string) => string;
 export declare const convertToCorrectLogicalFormat: (input: string) => string;
