@@ -2,6 +2,7 @@
 import { BinaryTree, Node } from "./BinaryTree";
 import { createBinaryExpressionTreeFromPostFixNotation, operatorMap, operatorSymbols, convertToCorrectLogicalFormat, replaceWordsWithCorrectSymbols } from './EvaluateExpressions';
 
+
 export interface AndGateProps {
     xOrigin: number;
     yOrigin: number;
@@ -10,10 +11,18 @@ export interface AndGateProps {
     isOutput: boolean;
 }
 
+export interface NotGateProps {
+    xOrigin: number;
+    yOrigin: number;
+    scale: number;
+    text: string;
+    isOutput: boolean;
+}
 
 type domElementProp = 
   | { type: "WireConnection", props: WireConnectionProps }
   | { type: "Variable", props: VariableProps }
+  | { type: "NotGate", props: NotGateProps }
   | { type: "AndGate", props: AndGateProps };
 
 
@@ -140,16 +149,31 @@ export class CircuitBuilder {
 // If a level has n nodes, divide your canvas height h into n+1 segments
                 const WIDTH_CONSTANT = 160
                 if (operatorSymbols.includes(node.value)) {
-                    currCompList.push({
-                        type: "AndGate",
-                        props: {
-                            xOrigin: xValue,
-                            yOrigin: yValue,
-                            scale: 1,
-                            text: "",
-                            isOutput: isOutput
-                        }
-                    })
+                    console.log("Pushing a variable")
+                    if (node.value != operatorMap["not"]) {
+                        currCompList.push({
+                            type: "AndGate",
+                            props: {
+                                xOrigin: xValue,
+                                yOrigin: yValue,
+                                scale: 1,
+                                text: "",
+                                isOutput: isOutput
+                            }
+                        })
+                    } else {
+                        console.log("Not gate")
+                        currCompList.push({
+                            type: "NotGate",
+                            props: {
+                                xOrigin: xValue,
+                                yOrigin: yValue,
+                                scale: 1,
+                                text: "",
+                                isOutput: isOutput
+                            }
+                        })
+                    }
 
                     // Now we need to get the connection LEFT WIRE and connection RIGHT WIRE
 
@@ -229,8 +253,11 @@ export class CircuitBuilder {
                         //     currCompList.push(this.makeConnectionToVariable(mapOfVariableComponents.get("a"), rightStartPointX, rightStartPointY))
                         // } else {
                         // }
+                    } else {
+                        console.log(node)
                     }
                 } else {
+                    console.log("Pushing a variable")
                     currCompList.push({
                         type: "Variable",
                         props: {
@@ -263,6 +290,7 @@ export class CircuitBuilder {
                 yPosition: currYForVariables,
                 status: 0
             }
+            console.log("Pushing a variable")
             currCompList.push({type: "Variable", 
                 props: variableComponent})
             mapOfVariableComponents.set(currVar, variableComponent)
@@ -277,6 +305,7 @@ export class CircuitBuilder {
         // currCompList.push(this.makeConnectionToVariable(mapOfVariableComponents.get("a"), 900, 700))
 
         variableConnectionOrigins.forEach((varConnection) => {
+            console.log("Pushing a variable")
             currCompList.push(this.makeConnectionToVariable(mapOfVariableComponents.get(varConnection.var), varConnection.x, varConnection.y))
         })
         return currCompList as domElementProp[]
@@ -307,28 +336,6 @@ export class CircuitBuilder {
     printTree = () => {
         this.binaryTree.print()
     }
-    
 
-    // {React.createElement("WireConnection", {
-    //     xOrigin: 1200,
-    //     yOrigin: 600,
-    //     xEnd: 500, 
-    //     yEnd: 400
-    // })} 
-
-    // Going to be:
-
-    // {React.createElement{item.type, item.props)} 
-
-    // where item.props will be either a WireConnectionProps
-    // or a AndGateProps (That I should change to a gate props)
-
-    // {
-    //     xOrigin: number;
-    //     yOrigin: number;
-    //     scale: number;
-    //     text: string;
-    //     isOutput: boolean;
-    // }
     
 }

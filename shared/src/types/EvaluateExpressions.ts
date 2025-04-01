@@ -20,8 +20,14 @@ export const createBinaryExpressionTreeFromPostFixNotation = (str: string): Bina
         if (operators.includes(char)) {
             // Then we want to pop 2 chars, create a binary tree, and push it back.
             const rightOperand = stack.pop()
-            const leftOperand = stack.pop()
-            const newBinaryTree: BinaryTree<string> = BinaryTree.create(char, leftOperand, rightOperand)
+            let newBinaryTree: BinaryTree<string>;
+            if (char != operatorMap["not"]) {
+                const leftOperand = stack.pop()
+                newBinaryTree = BinaryTree.create(char, leftOperand, rightOperand)
+            } else {
+                newBinaryTree = BinaryTree.create(char, null, rightOperand)
+
+            }
             stack.push(newBinaryTree)
             // console.log("operator: " + char)
         } else {

@@ -45,12 +45,12 @@ function AndGate({ xOrigin, yOrigin, scale, text, isOutput }: AndGateProps) {
 
     // INPUTS
     const inputCount = 2
-    const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (2 + 1))
+    const heightAdjustmentForOutputBasedOnInputCount = (heightAfterScale / (2))
 
 
     const rectangleRightSideMiddleX = xOrigin - widthAfterScale
     const rectangleRightSideMiddleY = yOrigin
-    const outputWireEndpointX = xOrigin - (widthAfterScale / 2)
+    const outputWireEndpointX = xOrigin - widthAfterScale * 0.86
     const outputWireEndpointY = yOrigin
 
     const topLeftX = rectangleRightSideMiddleX - widthAfterScale
@@ -58,8 +58,9 @@ function AndGate({ xOrigin, yOrigin, scale, text, isOutput }: AndGateProps) {
 
     const topLeftString = `${topLeftX},${topLeftY}`
     const topRightString = `${rectangleRightSideMiddleX},${y - heightAfterScale / 2}`
-    const bottomRightString = `${rectangleRightSideMiddleX},${y + heightAfterScale / 2}`
+    const centerRight = `${rectangleRightSideMiddleX},${y}`
     const bottomLeftString = `${rectangleRightSideMiddleX - widthAfterScale}, ${y + heightAfterScale / 2}`
+
 
 
 
@@ -79,20 +80,15 @@ function AndGate({ xOrigin, yOrigin, scale, text, isOutput }: AndGateProps) {
 
         
         {/* Square and curve for rendering the box */}
-        <path d={`M ${topRightString} A ${radiusStr} 0 0,1 ${bottomRightString}`} fill="white" stroke="black" strokeWidth="3" />
-        <path d={`M ${topRightString} L${topLeftString} L${bottomLeftString} L${bottomRightString}`}  fill="white" stroke="black" strokeWidth="3" />
-        
+        <path d={`M ${topLeftString} L${bottomLeftString} L${centerRight} L${topLeftString} `}  fill="white" stroke="black" strokeWidth="3" />
+        <circle r={scale * 5} fill="white" stroke="black" strokeWidth="3"  cx={rectangleRightSideMiddleX + scale * 3} cy={y}/>
+
 
         <line 
             x1={`${topLeftX}`} 
             y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (1)}`} 
             x2={`${topLeftX - widthAfterScale}`} 
             y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (1)}`} stroke="black" strokeWidth="3" 
-        /> <line 
-            x1={`${topLeftX}`} 
-            y1={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (2)}`} 
-            x2={`${topLeftX - widthAfterScale}`} 
-            y2={`${topLeftY + heightAdjustmentForOutputBasedOnInputCount * (2)}`} stroke="black" strokeWidth="3" 
         /> 
 
         {/* Output line and text for the output */}

@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import AndGate from './AndGate';
+import NotGate from './NotGate';
 import { AndOperator } from '@shared/types/AndOperator';
 import { OrOperator } from '@shared/types/OrOperator';
 import { NotOperator } from '@shared/types/NotOperator';
@@ -43,7 +44,6 @@ function Canvas() {
     const and =  new AndOperator(0, 1)
     // console.log(and.print() + " = " + and.eval())
     const not = new NotOperator(new OrOperator(0, 0));
-    // console.log(not.print() + " = " + not.eval())
 
 
     
@@ -88,6 +88,9 @@ function Canvas() {
                               return React.createElement(Variable, element.props);
                             case "AndGate":
                               return React.createElement(AndGate, element.props);
+                            case "NotGate":
+                                console.log("creating not gate")
+                                return React.createElement(NotGate, element.props);
                             default:
                               return null;
                           }
